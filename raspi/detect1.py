@@ -27,6 +27,7 @@ def tiva_leds(msg):
             msg_prev = msg 
     except:
         print(f"Valor no válido: {msg}")
+        msg_prev = msg
 
 def tiva_leds_count(msg):
     global msg_prev
@@ -87,17 +88,19 @@ def detectar_color(frame):
     elif max_pixels == orange_pixels:
         return 3  # naranja → 'f'
 
+###############Variables
 msg_prev = 0
-modelos = ModelosCNN(0)
-CONFIDENCE_THRESHOLD = 0.9
+modelos = ModelosCNN(4)
+CONFIDENCE_THRESHOLD = 0.8
 labels = ['Coca', 'Pepsi', 'Fanta']
 flag_count = False
 framesPerCount = 3
 frameCount = 0
 t = -1
-mode = 1
+mode = 0
 Nmodes = 4 #0 cnn, 1 counding boxes static objects, 2 by color, 3 moving objects
 flag_change = False
+tiempo_medicion = 600 #segundos
 
 class FakeSerial:
     def write(self, data):
@@ -149,20 +152,20 @@ while True:
             frameCount = 0
         if flag_count:
             t = time.time() - start_time        
-        if flag_count and t<60 and frameCount==0:
+        if flag_count and t<tiempo_medicion and frameCount==0:
             predictionArray, predictionText, predictionConf = modelos.Predict(frame)
             if predictionConf < CONFIDENCE_THRESHOLD:
-                label = f"Marca no reconocida. Confianza: {predictionConf}, botella: {predictionText}"
+                label = f"nr. Confianza: {predictionConf:.2f}, botella: {predictionText}"
                 msg = 0
             else:
-                label = f"Confianza: {predictionConf}, botella: {predictionText}"
+                label = f"Confianza: {predictionConf:.2f} botella: {predictionText}"
                 msg = np.argmax(predictionArray)+1
                 tiva_leds(msg)
                 time.sleep(0.2)
             cv2.putText(frame, label, (10, 30),
-                        cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
+                        cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             cv2.imshow("Predict", frame)    
-        elif t>60:
+        elif t>tiempo_medicion:
             flag_count=False
             t = -1
             sender = Send_data("Andy", soda_brands)
@@ -220,9 +223,9 @@ while True:
 
         cv2.putText(frame, f"Objetos: {len(contours)}", (20, 30),
                     cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 0, 255), 2)
-
-        tiva_leds_count(len(contours))
-        time.sleep(0.2)
+        if contours != 0:
+            tiva_leds_count(len(contours))
+            time.sleep(0.2)
         #cv2.imshow("Frame", frame)
         cv2.imshow("Mask", fgmask)
 
