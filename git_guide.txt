@@ -1,0 +1,96 @@
+========================================
+ GIT: COMANDOS BÁSICOS Y VARIANTES
+========================================
+
+🔧 CONFIGURACIÓN INICIAL
+----------------------------------------
+git config --global user.name "Tu Nombre"
+git config --global user.email "tu@correo.com"
+
+git config --list               # Ver configuración actual
+
+🌱 INICIALIZAR Y CLONAR
+----------------------------------------
+git init                        # Inicializa repo en carpeta actual
+git clone <url>                 # Clona repo remoto
+
+git clone <url> <carpeta>      # Clona en una carpeta específica
+
+📁 ESTADOS DEL REPO
+----------------------------------------
+git status                      # Ver archivos modificados y pendientes
+git add <archivo>               # Añade archivo al staging area
+git add .                       # Añade todos los cambios
+
+git restore <archivo>           # Descarta cambios locales
+
+📦 COMMIT Y LOG
+----------------------------------------
+git commit -m "Mensaje"         # Commit con mensaje
+git commit -am "msg"            # Add + commit (solo archivos ya trackeados)
+git log                         # Ver historial de commits
+git log --oneline               # Historial resumido
+
+🌍 CONEXIÓN A REPOS REMOTOS
+----------------------------------------
+git remote -v                   # Ver repos remotos
+git remote add origin <url>    # Agrega repo remoto
+git push -u origin master       # Sube rama master por primera vez
+
+🧭 RAMAS (BRANCHES)
+----------------------------------------
+git branch                      # Ver ramas existentes
+git branch <rama>               # Crea rama nueva
+git branch -d <rama>            # Elimina rama local
+
+git checkout <rama>             # Cambiar de rama
+git checkout -b <rama>          # Crear y cambiar a rama nueva
+git switch <rama>               # Alternativa moderna a checkout
+
+🛠️ MERGE Y REBASE
+----------------------------------------
+git merge <rama>                # Fusiona <rama> con la actual
+git rebase <rama>               # Reaplica commits sobre otra base
+git rebase -i HEAD~3            # Rebase interactivo de últimos 3 commits
+
+🛑 STASH (guardar temporal)
+----------------------------------------
+git stash                       # Guarda cambios sin commitear
+git stash pop                   # Restaura lo guardado
+git stash list                  # Ver stashes
+
+🛤️ PUSH, PULL, FETCH
+----------------------------------------
+git push                        # Sube cambios al repo remoto
+git pull                        # Descarga y fusiona cambios
+git fetch                       # Solo descarga sin fusionar
+
+🏷️ TAGS (VERSIONES)
+----------------------------------------
+git tag                         # Ver tags
+git tag -a v1.0 -m "Versión 1"  # Crear tag anotado
+git push origin v1.0            # Subir un tag
+
+🧹 LIMPIEZA
+----------------------------------------
+git clean -f                    # Elimina archivos sin trackear
+git reset --hard                # Revierte todo al último commit
+
+🕹️ VERSIONES DE ARCHIVOS
+----------------------------------------
+git diff                        # Ver cambios no agregados
+git diff --staged               # Cambios en staging listos para commit
+git checkout <commit> <file>    # Recuperar archivo desde commit
+
+🪄 REVERT Y RESET
+----------------------------------------
+git revert <commit>            # Crea nuevo commit que revierte cambios
+git reset --hard <commit>      # Revierte HEAD (¡peligroso!)
+git reset --soft <commit>      # Mueve HEAD pero mantiene cambios
+
+📌 ALIAS ÚTILES
+----------------------------------------
+git config --global alias.st status
+git config --global alias.ci commit
+git config --global alias.co checkout
+git config --global alias.br branch
